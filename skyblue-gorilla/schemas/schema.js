@@ -6,5 +6,5 @@ import schemaTypes from "all:part:@sanity/base/schema-type"
 
 export default createSchema({
   name: "default",
-  types: schemaTypes.concat([spiceProducts, animals]),
+  types: schemaTypes.concat([spiceProducts]),
 })

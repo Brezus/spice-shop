@@ -36,5 +36,15 @@ export default {
       title: "Details",
       type: "string",
     },
+    {
+      name: "detailsLong",
+      title: "DetailsLong",
+      type: "string",
+    },
+    {
+      name: "winterSpice",
+      title: "WinterSpice",
+      type: "boolean",
+    },
   ],
 }
