@@ -19,12 +19,20 @@ import Script from "next/script"
 import { useAppContext } from "../../context/ShoppingCartContext"
 import Cart from "../../components/Cart"
 import { TiShoppingCart } from "react-icons/ti"
+import { createGlobalStyle } from "styled-components"
 
-export default function ProductDetails({ selectedSpice }) {
+const GlobalStyle = createGlobalStyle`
+  body {
+    overflow: ${(props) => (props.cartOpend ? "hidden" : "initial")};
+  }
+`
+
+export default function ProductDetails({ selectedSpice, products }) {
   const { details, detailsLong, image, name, price } = selectedSpice
   const value = useAppContext()
   return (
     <>
+      <GlobalStyle cartOpend={value.openCart} />
       <DetailsCont>
         <Display data={{ image, selectedSpice }} />
         <InfoCont>
@@ -55,7 +63,7 @@ export default function ProductDetails({ selectedSpice }) {
           )}
         </CartCont>
       </DetailsCont>
-      {value.openCart && <Cart items={selectedSpice} />}
+      {value.openCart && <Cart items={value.cartItems} allItems={products} />}
     </>
   )
 }
@@ -91,11 +99,11 @@ export async function getStaticProps({ params: { spice } }) {
 
   const productsQuery = `*[_type == "spiceProducts"]`
   const products = await client.fetch(productsQuery)
-  console.log(products)
   return {
     props: {
       selectedSpice,
       spice,
+      products,
     },
   }
 }
