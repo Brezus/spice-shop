@@ -44,11 +44,16 @@ const CartCont = styled.div`
   background: white;
   z-index: 2;
   overflow-y: scroll;
-  padding: 2em 0;
+  overflow-x: hidden;
+  padding: 2em 1em;
+
+  h3 {
+    font-size: 1rem;
+  }
 
   p {
-    font-size: 1.2rem;
     font-weight: 400;
+    font-size: 0.7rem;
   }
 `
 const CartBg = styled.div`
@@ -65,16 +70,30 @@ const CartBg = styled.div`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+
+  img {
+    width: 30%;
+  }
 `
 const Desc = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1em;
+  justify-content: center;
 `
 const Icons = styled(Desc)`
   flex-direction: row;
-  gap: 1.5em;
+  gap: 0.7em;
+  justify-content start;
+`
+
+const Flex = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 3em;
 `
 
 export default function Cart({ items, allItems }) {
@@ -85,18 +104,28 @@ export default function Cart({ items, allItems }) {
       <Item key={nanoid()}>
         <img src={urlFor(item.image[0])} alt={item.name} />
         <Desc>
-          <h3>{item.name}</h3>
+          <Flex>
+            <h3>{item.name}</h3>
+            <RiDeleteBack2Line />
+          </Flex>
           <p>{item.details}</p>
-          <Icons>
-            <AiOutlineMinusSquare />
-            <p>2</p>
-            <AiOutlinePlusSquare />
-          </Icons>
+          <Flex>
+            <Icons>
+              <AiOutlineMinusSquare
+                onClick={() => {
+                  value.decrementQuant(value.openCart, item._id)
+                }}
+              />
+              <p>{item.quantity}</p>
+              <AiOutlinePlusSquare
+                onClick={() => {
+                  value.incrementQuant(value.openCart, item._id)
+                }}
+              />
+            </Icons>
+            <p>${item.price * item.quantity}</p>
+          </Flex>
         </Desc>
-        <div>
-          <RiDeleteBack2Line />
-          <p>quantity</p>
-        </div>
       </Item>
     )
   })

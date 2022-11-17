@@ -14,15 +14,15 @@ const H2 = styled.h2`
 
 export default function Home({ spiceProducts }) {
   const productsRendered = spiceProducts.map((prod) => (
-    <Product key={prod._id} spice={prod} />
+    <Product key={prod?._id} spice={prod} />
   ))
   const winterProducts = spiceProducts
     .filter((product) => product.winterSpice)
-    .map((prod) => <Product key={prod._id} spice={prod} />)
+    .map((prod) => <Product key={prod?._id} spice={prod} />)
 
   const summerProducts = spiceProducts
     .filter((product) => !product.winterSpice)
-    .map((prod) => <Product key={prod._id} spice={prod} />)
+    .map((prod) => <Product key={prod?._id} spice={prod} />)
 
   return (
     <>

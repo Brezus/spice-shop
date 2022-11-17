@@ -36,11 +36,29 @@ export default function ShoppingCartContext({ children }) {
     setNewItemAdded(true)
   }
 
-  function incrementQuant() {
-    setQuantity((prev) => prev + 1)
+  function incrementQuant(openCart = false, id) {
+    if (openCart) {
+      setTotalQuantity((prev) => prev + 1)
+      setCartItems((prev) => {
+        return prev.map((cartProd, i) => {
+          return cartProd._id === id
+            ? { ...cartProd, quantity: cartProd.quantity + 1 }
+            : { ...cartProd }
+        })
+      })
+    } else {
+      setQuantity((prev) => prev + 1)
+    }
   }
-  function decrementQuant() {
-    setQuantity((prev) => (prev <= 1 ? 1 : prev - 1))
+  function decrementQuant(openCart, id) {
+    if (openCart) {
+      setTotalQuantity((prev) => (prev <= 1 ? 1 : prev - 1))
+      const lessThanOne = totalQuantity <= 1 ? true : false
+      if (lessThanOne) console.log("less than or equal one")
+      return
+    } else {
+      setQuantity((prev) => (prev <= 1 ? 1 : prev - 1))
+    }
   }
   function removeItem(id) {
     setCartItems((prev) =>
@@ -57,7 +75,6 @@ export default function ShoppingCartContext({ children }) {
   }
   function closeCt() {
     setOpenCart(false)
-    console.log("ran")
   }
 
   return (

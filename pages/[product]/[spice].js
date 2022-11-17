@@ -47,9 +47,21 @@ export default function ProductDetails({ selectedSpice, products }) {
               add to cart
             </Button>
             <VolumeCont>
-              <VolumeBtns onClick={value.decrementQuant}>-</VolumeBtns>
+              <VolumeBtns
+                onClick={() => {
+                  value.decrementQuant(value.openCart)
+                }}
+              >
+                -
+              </VolumeBtns>
               <Quant>{value.quantity}</Quant>
-              <VolumeBtns onClick={value.incrementQuant}>+</VolumeBtns>
+              <VolumeBtns
+                onClick={() => {
+                  value.incrementQuant(value.openCart)
+                }}
+              >
+                +
+              </VolumeBtns>
             </VolumeCont>
           </ButtonsCont>
         </InfoCont>
