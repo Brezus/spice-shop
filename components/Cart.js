@@ -97,16 +97,19 @@ const Flex = styled.div`
 `
 
 export default function Cart({ items, allItems }) {
-  console.log(items)
   const value = useAppContext()
-  const cartItemsEls = items.map((item) => {
+  const cartItemsEls = items?.map((item) => {
     return (
       <Item key={nanoid()}>
-        <img src={urlFor(item.image[0])} alt={item.name} />
+        <img src={urlFor(item?.image[0])} alt={item.name} />
         <Desc>
           <Flex>
             <h3>{item.name}</h3>
-            <RiDeleteBack2Line />
+            <RiDeleteBack2Line
+              onClick={() => {
+                value.removeItem(item._id)
+              }}
+            />
           </Flex>
           <p>{item.details}</p>
           <Flex>
@@ -114,6 +117,7 @@ export default function Cart({ items, allItems }) {
               <AiOutlineMinusSquare
                 onClick={() => {
                   value.decrementQuant(value.openCart, item._id)
+                  console.log("clicked")
                 }}
               />
               <p>{item.quantity}</p>
