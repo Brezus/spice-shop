@@ -97,6 +97,7 @@ const Flex = styled.div`
 `
 
 export default function Cart({ items, allItems }) {
+  const cartValue = items
   const value = useAppContext()
   const cartItemsEls = items?.map((item) => {
     return (
@@ -117,7 +118,6 @@ export default function Cart({ items, allItems }) {
               <AiOutlineMinusSquare
                 onClick={() => {
                   value.decrementQuant(value.openCart, item._id)
-                  console.log("clicked")
                 }}
               />
               <p>{item.quantity}</p>
@@ -135,7 +135,7 @@ export default function Cart({ items, allItems }) {
   })
   return (
     <Wrapper>
-      {items.length >= 1 ? (
+      {items?.length >= 1 ? (
         <CartCont>{cartItemsEls}</CartCont>
       ) : (
         <>

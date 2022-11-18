@@ -13,7 +13,7 @@ export default function ShoppingCartContext({ children }) {
   const [newItemAdded, setNewItemAdded] = useState(false)
 
   function addToCart(product, quantity) {
-    const isInside = cartItems.find((prod) => prod._id === product._id)
+    const isInside = cartItems?.find((prod) => prod._id === product._id)
 
     setQuantity((prev) => prev + quantity)
     setTotalPrice((prev) => prev + product.price * quantity)
@@ -57,9 +57,9 @@ export default function ShoppingCartContext({ children }) {
 
       setCartItems((prev) => {
         if (prev.find((cartProd) => cartProd._id === id)?.quantity === 1) {
-          return prev.filter((cartProd) => cartProd._id != id)
+          return prev.filter((cartProd) => cartProd._id !== id)
         } else {
-          prev.map((cartProd) => {
+          return prev.map((cartProd) => {
             return cartProd._id === id
               ? { ...cartProd, quantity: cartProd.quantity - 1 }
               : cartProd
