@@ -3,6 +3,18 @@ import styled, { css } from "styled-components"
 import { useRouter } from "next/router"
 import Link from "next/link"
 import { TiChevronLeft } from "react-icons/ti"
+import { CartCont } from "../styles/spiceStyles"
+import { TiShoppingCart } from "react-icons/ti"
+import { useAppContext } from "../context/ShoppingCartContext"
+import Cart from "./Cart"
+import { createGlobalStyle } from "styled-components"
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    overflow: ${(props) => (props.cartOpend ? "hidden" : "initial")};
+    position: relative;
+  }
+`
 
 const Navigation = styled.nav`
   background-color: "rgba(0, 0, 0, 0.3)"};
@@ -44,6 +56,8 @@ const Li = styled.li`
 `
 
 export default function Nav() {
+  const { openCt, newItemAdded, newItemsQuant, cartItems, openCart } =
+    useAppContext()
   const {
     query: { spice },
   } = useRouter()
@@ -60,6 +74,7 @@ export default function Nav() {
 
   return (
     <>
+      <GlobalStyle cartOpend={openCart} />
       {spice ? (
         <Navigation details>
           <Link href={"/"}>
@@ -84,6 +99,13 @@ export default function Nav() {
               <Li style={{ cursor: "pointer" }}>spices</Li>
             </Link>
           </ul>
+          <CartCont onClick={openCt}>
+            <TiShoppingCart />
+            {newItemAdded >= 1 && (
+              <p>{newItemsQuant >= 99 ? newItemsQuant + "+" : newItemsQuant}</p>
+            )}
+          </CartCont>
+          {openCart && <Cart items={cartItems} />}
         </Navigation>
       )}
     </>

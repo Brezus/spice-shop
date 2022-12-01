@@ -16,11 +16,11 @@ function MyApp({ Component, pageProps }) {
     <>
       <ThemeProvider theme={vars}>
         <Wrapper>
-          <Layout>
-            <ShoppingCartContext>
+          <ShoppingCartContext>
+            <Layout>
               <Component {...pageProps} />
-            </ShoppingCartContext>
-          </Layout>
+            </Layout>
+          </ShoppingCartContext>
         </Wrapper>
       </ThemeProvider>
     </>

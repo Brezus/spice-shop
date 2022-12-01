@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { client } from "../../components/client"
 import {
   Button,
@@ -24,15 +24,31 @@ import { createGlobalStyle } from "styled-components"
 const GlobalStyle = createGlobalStyle`
   body {
     overflow: ${(props) => (props.cartOpend ? "hidden" : "initial")};
+    position: relative;
   }
 `
 
 export default function ProductDetails({ selectedSpice, products }) {
   const { details, detailsLong, image, name, price } = selectedSpice
-  const value = useAppContext()
+  const {
+    cartItems,
+    openCart,
+    decrementQuant,
+    incrementQuant,
+    addToCart,
+    quantity,
+    openCt,
+    newItemAdded,
+    newItemsQuant,
+    closeCt,
+  } = useAppContext()
+  useEffect(() => {
+    closeCt()
+  }, [])
+
   return (
     <>
-      <GlobalStyle cartOpend={value.openCart} />
+      <GlobalStyle cartOpend={openCart} />
       <DetailsCont>
         <Display data={{ image, selectedSpice }} />
         <InfoCont>
@@ -41,23 +57,21 @@ export default function ProductDetails({ selectedSpice, products }) {
           <DetailsP>{detailsLong}</DetailsP>
           <PriceP>${price}.00</PriceP>
           <ButtonsCont>
-            <Button
-              onClick={() => value.addToCart(selectedSpice, value.quantity)}
-            >
+            <Button onClick={() => addToCart(selectedSpice, quantity)}>
               add to cart
             </Button>
             <VolumeCont>
               <VolumeBtns
                 onClick={() => {
-                  value.decrementQuant(value.openCart)
+                  decrementQuant(openCart)
                 }}
               >
                 -
               </VolumeBtns>
-              <Quant>{value.quantity}</Quant>
+              <Quant>{quantity}</Quant>
               <VolumeBtns
                 onClick={() => {
-                  value.incrementQuant(value.openCart)
+                  incrementQuant(openCart)
                 }}
               >
                 +
@@ -65,17 +79,14 @@ export default function ProductDetails({ selectedSpice, products }) {
             </VolumeCont>
           </ButtonsCont>
         </InfoCont>
-        <CartCont onClick={value.openCt}>
+        <CartCont onClick={openCt}>
           <TiShoppingCart />
-          {value.newItemAdded >= 1 && (
-            <p>
-              {value.totalQuantity}
-              {value.totalQuantity >= 99 && "+"}
-            </p>
+          {newItemAdded >= 1 && (
+            <p>{newItemsQuant >= 99 ? newItemsQuant + "+" : newItemsQuant}</p>
           )}
         </CartCont>
+        {openCart && <Cart items={cartItems} allItems={products} />}
       </DetailsCont>
-      {value.openCart && <Cart items={value.cartItems} allItems={products} />}
     </>
   )
 }

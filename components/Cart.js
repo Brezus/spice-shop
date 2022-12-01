@@ -27,6 +27,8 @@ const appearLeft = keyframes`
 
 const Wrapper = styled.section`
   position: relative;
+  padding: 5em 1em;
+  z-index: 5;
 `
 
 const CartCont = styled.div`
@@ -35,7 +37,7 @@ const CartCont = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 1em;
+  gap: 1.5em;
   position: fixed;
   left: 20%;
   top: 0;
@@ -45,7 +47,6 @@ const CartCont = styled.div`
   z-index: 2;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 2em 1em;
 
   h3 {
     font-size: 1rem;
@@ -70,10 +71,12 @@ const CartBg = styled.div`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1em;
+  width: 70%;
+  justify-content: start;
 
   img {
-    width: 30%;
+    width: 12%;
   }
 `
 const Desc = styled.div`
@@ -81,6 +84,7 @@ const Desc = styled.div`
   flex-direction: column;
   gap: 1em;
   justify-content: center;
+  width: 100%;
 `
 const Icons = styled(Desc)`
   flex-direction: row;
@@ -127,7 +131,7 @@ export default function Cart({ items, allItems }) {
                 }}
               />
             </Icons>
-            <p>${item.price * item.quantity}</p>
+            <p>${item.price}</p>
           </Flex>
         </Desc>
       </Item>
@@ -136,7 +140,10 @@ export default function Cart({ items, allItems }) {
   return (
     <Wrapper>
       {items?.length >= 1 ? (
-        <CartCont>{cartItemsEls}</CartCont>
+        <CartCont>
+          {cartItemsEls}
+          <p>{value.totalPrice}</p>
+        </CartCont>
       ) : (
         <>
           <CartCont>

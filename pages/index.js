@@ -4,7 +4,7 @@ import { client } from "../components/client"
 import Product from "../components/product"
 import styled from "styled-components"
 import Hero from "../components/Hero"
-import About from "../components/About"
+import About from "../components/AboutUs"
 import Items from "../components/Items"
 
 const H2 = styled.h2`

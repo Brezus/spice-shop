@@ -11,16 +11,19 @@ export default function ShoppingCartContext({ children }) {
   const [totalPrice, setTotalPrice] = useState(0)
   const [openCart, setOpenCart] = useState(false)
   const [newItemAdded, setNewItemAdded] = useState(false)
+  const [newItemsQuant, setNewItemsQuant] = useState(0)
 
-  function addToCart(product, quantity) {
+  function addToCart(product, quantity = 1) {
     const isInside = cartItems?.find((prod) => prod._id === product._id)
 
-    setQuantity((prev) => prev + quantity)
     setTotalPrice((prev) => prev + product.price * quantity)
+    setTotalQuantity((prev) => {
+      return prev >= 99 ? 99 : prev + quantity
+    })
     if (isInside) {
       setCartItems((prev) => {
         return prev.map((cartProd) => {
-          return cartProd._id === product._ids
+          return cartProd._id == product._id
             ? { ...cartProd, quantity: cartProd.quantity + quantity }
             : { ...cartProd }
         })
@@ -29,21 +32,24 @@ export default function ShoppingCartContext({ children }) {
       product.quantity = quantity
       setCartItems((prev) => [...prev, { ...product }])
     }
-    setTotalQuantity((prev) => {
-      return prev >= 99 ? 99 : prev + quantity
-    })
+
+    setNewItemsQuant((prev) => prev + quantity)
     setQuantity(1)
     setNewItemAdded(true)
   }
 
   function incrementQuant(openCart = false, id) {
     if (openCart) {
-      setTotalQuantity((prev) => prev + 1)
+      const chosenProd = cartItems.findIndex((prod) => prod._id === id)
+      setTotalPrice((prev) => prev + cartItems[chosenProd]?.price)
       setCartItems((prev) => {
         return prev.map((cartProd, i) => {
-          return cartProd._id === id
-            ? { ...cartProd, quantity: cartProd.quantity + 1 }
-            : { ...cartProd }
+          if (cartProd._id === id) {
+            console.log(cartProd)
+            return { ...cartProd, quantity: cartProd.quantity + 1 }
+          } else {
+            return cartProd
+          }
         })
       })
     } else {
@@ -52,9 +58,8 @@ export default function ShoppingCartContext({ children }) {
   }
   function decrementQuant(openCart, id) {
     if (openCart) {
-      let selectedItem
-      setTotalQuantity((prev) => (prev <= 1 ? 1 : prev - 1))
-
+      const chosenProd = cartItems.findIndex((prod) => prod._id === id)
+      setTotalPrice((prev) => prev - cartItems[chosenProd]?.price)
       setCartItems((prev) => {
         if (prev.find((cartProd) => cartProd._id === id)?.quantity === 1) {
           return prev.filter((cartProd) => cartProd._id !== id)
@@ -82,7 +87,7 @@ export default function ShoppingCartContext({ children }) {
   function openCt() {
     setOpenCart(true)
     setNewItemAdded(false)
-    setTotalQuantity(0)
+    setNewItemsQuant(0)
   }
   function closeCt() {
     setOpenCart(false)
@@ -103,6 +108,8 @@ export default function ShoppingCartContext({ children }) {
         openCart,
         cartItems,
         newItemAdded,
+        newItemsQuant,
+        totalPrice,
       }}
     >
       {children}

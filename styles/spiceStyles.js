@@ -143,6 +143,7 @@ export const CartCont = styled.div`
   background: white;
   cursor: pointer;
   position: relative;
+  z-index: 4;
 
   svg {
     font-size: 1.8rem;

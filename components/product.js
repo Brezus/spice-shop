@@ -6,6 +6,7 @@ import styled from "styled-components"
 import { TiStarOutline } from "react-icons/ti"
 import { TiStar } from "react-icons/ti"
 import { TiShoppingCart } from "react-icons/ti"
+import { useAppContext } from "../context/ShoppingCartContext"
 
 const StyledLink = styled.div`
   cursor: pointer;
@@ -59,6 +60,7 @@ const ShoppingCart = styled.div`
 `
 
 export default function Product({ spice }) {
+  const { addToCart, cartItems } = useAppContext()
   const stars = new Array(4)
     .fill(<TiStar />)
     .map((star, i) => <TiStar style={{ color: "yellow" }} key={nanoid()} />)
@@ -80,7 +82,13 @@ export default function Product({ spice }) {
             </div>
             <p>${spice.price}</p>
             <ShoppingCart>
-              <TiShoppingCart />
+              <TiShoppingCart
+                onClick={(e) => {
+                  e.stopPropagation()
+                  addToCart(spice, 1)
+                }}
+                style={{ color: "red" }}
+              />
             </ShoppingCart>
           </Info>
         </StyledLink>
