@@ -2,10 +2,12 @@ import Head from "next/head"
 import styles from "../styles/Home.module.css"
 import { client } from "../components/client"
 import Product from "../components/product"
-import styled from "styled-components"
+import styled, { withTheme } from "styled-components"
 import Hero from "../components/Hero"
 import About from "../components/AboutUs"
 import Items from "../components/Items"
+import Cart from "../components/Cart"
+import { useAppContext } from "../context/ShoppingCartContext"
 
 const H2 = styled.h2`
   color: black;
@@ -13,6 +15,7 @@ const H2 = styled.h2`
 `
 
 export default function Home({ spiceProducts }) {
+  const { cartItems } = useAppContext()
   const productsRendered = spiceProducts.map((prod) => (
     <Product key={prod?._id} spice={prod} />
   ))
@@ -23,7 +26,18 @@ export default function Home({ spiceProducts }) {
   const summerProducts = spiceProducts
     .filter((product) => !product.winterSpice)
     .map((prod) => <Product key={prod?._id} spice={prod} />)
-
+  const divStyles = {
+    background: "white",
+    minHeight: "100vh",
+    position: "absolute",
+    left: "20%",
+    right: "0",
+    top: "0",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  }
   return (
     <>
       <Head>
@@ -36,6 +50,7 @@ export default function Home({ spiceProducts }) {
         <Items>{winterProducts}</Items>
         <Items>{summerProducts}</Items>
       </div>
+      <Cart style={divStyles} items={spiceProducts} />
     </>
   )
 }

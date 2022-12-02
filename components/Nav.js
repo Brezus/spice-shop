@@ -73,7 +73,7 @@ export default function Nav() {
   const chevronContStyles = { zIndex: "2" }
 
   return (
-    <>
+    <div>
       <GlobalStyle cartOpend={openCart} />
       {spice ? (
         <Navigation details>
@@ -105,9 +105,9 @@ export default function Nav() {
               <p>{newItemsQuant >= 99 ? newItemsQuant + "+" : newItemsQuant}</p>
             )}
           </CartCont>
-          {openCart && <Cart items={cartItems} />}
         </Navigation>
       )}
-    </>
+      {openCart && <Cart items={cartItems} />}
+    </div>
   )
 }

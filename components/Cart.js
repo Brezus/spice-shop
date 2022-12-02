@@ -26,9 +26,12 @@ const appearLeft = keyframes`
 `
 
 const Wrapper = styled.section`
-  position: relative;
-  padding: 5em 1em;
   z-index: 5;
+  height: 100vh;
+  width: 40%;
+  position: fixed;
+  right: 0;
+  top: 0;
 `
 
 const CartCont = styled.div`
@@ -37,16 +40,19 @@ const CartCont = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 1.5em;
-  position: fixed;
-  left: 20%;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  gap: 1em;
+  padding: 2em;
+  height: 100%;
+  // position: fixed;
+  // left: 20%;
+  // top: 0;
+  // right: 0;
+  // bottom: 0;
   background: white;
   z-index: 2;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  // overflow-y: scroll;
+  // z-index: 6;
+  // min-height: 100vh;
 
   h3 {
     font-size: 1rem;
@@ -105,7 +111,7 @@ export default function Cart({ items, allItems }) {
   const value = useAppContext()
   const cartItemsEls = items?.map((item) => {
     return (
-      <Item key={nanoid()}>
+      <div key={nanoid()}>
         <img src={urlFor(item?.image[0])} alt={item.name} />
         <Desc>
           <Flex>
@@ -134,7 +140,7 @@ export default function Cart({ items, allItems }) {
             <p>${item.price}</p>
           </Flex>
         </Desc>
-      </Item>
+      </div>
     )
   })
   return (
@@ -152,7 +158,26 @@ export default function Cart({ items, allItems }) {
           </CartCont>
         </>
       )}
-      <CartBg onClick={value.closeCt} />
+      {/* <CartBg onClick={value.closeCt} /> */}
     </Wrapper>
   )
 }
+// return (
+//   <Wrapper>
+//     {items?.length >= 1 ? (
+//       <CartCont>
+//         {cartItemsEls}
+//         <p>{value.totalPrice}</p>
+//       </CartCont>
+//     ) : (
+//       <>
+//         <CartCont>
+//           <p>It appears your cart is empty</p>
+//           <Button onClick={value.closeCt}>continue browsing</Button>
+//         </CartCont>
+//       </>
+//     )}
+//     <CartBg onClick={value.closeCt} />
+//   </Wrapper>
+// )
+// }
