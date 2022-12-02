@@ -107,7 +107,7 @@ export default function Nav() {
           </CartCont>
         </Navigation>
       )}
-      {openCart && <Cart items={cartItems} />}
+      {/* {openCart && <Cart items={cartItems} />} */}
     </div>
   )
 }

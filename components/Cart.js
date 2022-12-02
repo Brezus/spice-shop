@@ -1,5 +1,5 @@
 import React from "react"
-import styled, { keyframes } from "styled-components"
+import styled, { keyframes, css } from "styled-components"
 import { Button } from "../styles/spiceStyles"
 import { useAppContext } from "../context/ShoppingCartContext"
 import { AiOutlinePlusSquare } from "react-icons/ai"
@@ -26,33 +26,31 @@ const appearLeft = keyframes`
 `
 
 const Wrapper = styled.section`
-  z-index: 5;
-  height: 100vh;
-  width: 40%;
-  position: fixed;
-  right: 0;
-  top: 0;
+  position: relative;
+  padding: 2em 1em;
 `
 
 const CartCont = styled.div`
   color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 1em;
-  padding: 2em;
-  height: 100%;
-  // position: fixed;
-  // left: 20%;
-  // top: 0;
-  // right: 0;
-  // bottom: 0;
+  position: fixed;
+  left: 20%;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: white;
-  z-index: 2;
-  // overflow-y: scroll;
-  // z-index: 6;
-  // min-height: 100vh;
+  overflow-y: scroll;
+  display: grid;
+  grid-auto-rows: 1fr;
+  padding: 2em;
+  place-items: center;
+  gap: 1rem;
+  z-index: 6;
+  ${(props) =>
+    props.empty &&
+    css`
+      grid-template-rows: 5px 50px;
+      place-content: center;
+    `}
 
   h3 {
     font-size: 1rem;
@@ -70,20 +68,17 @@ const CartBg = styled.div`
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.9);
-  z-index: 1;
+  z-index: 5;
+
   animation: ${appearOpac} 0.2s ease;
 `
 
 const Item = styled.div`
   display: flex;
-  align-items: center;
   gap: 1em;
   width: 70%;
-  justify-content: start;
-
-  img {
-    width: 12%;
-  }
+  display: grid;
+  grid-template-columns: 35px 1fr;
 `
 const Desc = styled.div`
   display: flex;
@@ -111,7 +106,7 @@ export default function Cart({ items, allItems }) {
   const value = useAppContext()
   const cartItemsEls = items?.map((item) => {
     return (
-      <div key={nanoid()}>
+      <Item key={nanoid()}>
         <img src={urlFor(item?.image[0])} alt={item.name} />
         <Desc>
           <Flex>
@@ -140,7 +135,7 @@ export default function Cart({ items, allItems }) {
             <p>${item.price}</p>
           </Flex>
         </Desc>
-      </div>
+      </Item>
     )
   })
   return (
@@ -152,32 +147,13 @@ export default function Cart({ items, allItems }) {
         </CartCont>
       ) : (
         <>
-          <CartCont>
+          <CartCont empty>
             <p>It appears your cart is empty</p>
             <Button onClick={value.closeCt}>continue browsing</Button>
           </CartCont>
         </>
       )}
-      {/* <CartBg onClick={value.closeCt} /> */}
+      <CartBg onClick={value.closeCt} />
     </Wrapper>
   )
 }
-// return (
-//   <Wrapper>
-//     {items?.length >= 1 ? (
-//       <CartCont>
-//         {cartItemsEls}
-//         <p>{value.totalPrice}</p>
-//       </CartCont>
-//     ) : (
-//       <>
-//         <CartCont>
-//           <p>It appears your cart is empty</p>
-//           <Button onClick={value.closeCt}>continue browsing</Button>
-//         </CartCont>
-//       </>
-//     )}
-//     <CartBg onClick={value.closeCt} />
-//   </Wrapper>
-// )
-// }

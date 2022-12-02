@@ -15,7 +15,7 @@ const H2 = styled.h2`
 `
 
 export default function Home({ spiceProducts }) {
-  const { cartItems } = useAppContext()
+  const { cartItems, openCart } = useAppContext()
   const productsRendered = spiceProducts.map((prod) => (
     <Product key={prod?._id} spice={prod} />
   ))
@@ -50,7 +50,7 @@ export default function Home({ spiceProducts }) {
         <Items>{winterProducts}</Items>
         <Items>{summerProducts}</Items>
       </div>
-      <Cart style={divStyles} items={spiceProducts} />
+      {openCart && <Cart items={cartItems} />}
     </>
   )
 }
