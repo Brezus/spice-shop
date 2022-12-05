@@ -62,6 +62,10 @@ export default function Nav() {
     query: { spice },
   } = useRouter()
 
+  const router = useRouter()
+  console.log(router?.route)
+  console.log(router)
+
   const chevronStyles = {
     fontSize: "2rem",
     color: "black",
@@ -72,42 +76,56 @@ export default function Nav() {
 
   const chevronContStyles = { zIndex: "2" }
 
+  const homeNavigation = (
+    <Navigation>
+      <Link href={"/"}>
+        <H1>feelin spicy</H1>
+      </Link>
+      <ul>
+        <Link href="#about-us">
+          <Li style={{ cursor: "pointer" }}>about us</Li>
+        </Link>
+        <Link href="#spices">
+          <Li style={{ cursor: "pointer" }}>spices</Li>
+        </Link>
+        <Link href="/auth/Login">
+          <Li style={{ cursor: "pointer" }}>log-in</Li>
+        </Link>
+      </ul>
+      <CartCont onClick={openCt}>
+        <TiShoppingCart />
+        {newItemAdded >= 1 && (
+          <p>{newItemsQuant >= 99 ? newItemsQuant + "+" : newItemsQuant}</p>
+        )}
+      </CartCont>
+    </Navigation>
+  )
+
+  const detailsNavigation = (
+    <Navigation details>
+      <Link href={"/"}>
+        <div style={chevronContStyles}>
+          <TiChevronLeft style={chevronStyles} />
+        </div>
+      </Link>
+    </Navigation>
+  )
+
+  const renderNav = (router) => {
+    switch (router?.pathname) {
+      case "/":
+        return homeNavigation
+      case "/[product]/[spice]":
+        return detailsNavigation
+      case "/auth/Login":
+        return null
+    }
+  }
+
   return (
     <div>
       <GlobalStyle cartOpend={openCart} />
-      {spice ? (
-        <Navigation details>
-          <Link href={"/"}>
-            <div style={chevronContStyles}>
-              <TiChevronLeft style={chevronStyles} />
-            </div>
-          </Link>
-        </Navigation>
-      ) : (
-        <Navigation>
-          <Link href={"/"}>
-            <H1>feelin spicy</H1>
-          </Link>
-          <ul>
-            <Link href={"/"}>
-              <Li style={{ cursor: "pointer" }}>home</Li>
-            </Link>
-            <Link href="#about-us">
-              <Li style={{ cursor: "pointer" }}>about us</Li>
-            </Link>
-            <Link href="#spices">
-              <Li style={{ cursor: "pointer" }}>spices</Li>
-            </Link>
-          </ul>
-          <CartCont onClick={openCt}>
-            <TiShoppingCart />
-            {newItemAdded >= 1 && (
-              <p>{newItemsQuant >= 99 ? newItemsQuant + "+" : newItemsQuant}</p>
-            )}
-          </CartCont>
-        </Navigation>
-      )}
-      {/* {openCart && <Cart items={cartItems} />} */}
+      {renderNav(router)}
     </div>
   )
 }
